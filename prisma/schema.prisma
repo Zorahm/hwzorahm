@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     String
+}
+
+model Week {
+  id        Int        @id @default(autoincrement())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  status    String     @default("future")
+  exams     Exam[]
+  homeworks Homework[]
+  notes     Note[]
+  schedules Schedule[]
+}
+
+model Schedule {
+  id         Int        @id @default(autoincrement())
+  weekId     Int
+  day        String
+  slot       Int
+  subject    String
+  teacher    String?
+  room       String?
+  customTime Boolean    @default(false)
+  startTime  String?
+  endTime    String?
+  isSkipped  Boolean    @default(false)
+  lessonType String?
+  homeworks  Homework[]
+  notes      Note[]
+  week       Week       @relation(fields: [weekId], references: [id])
+}
+
+model Homework {
+  id                  Int            @id @default(autoincrement())
+  weekId              Int
+  subject             String
+  description         String
+  shortDescription    String?
+  detailedDescription String?
+  deadline            DateTime
+  specificDate        DateTime?
+  forSpecificDateOnly Boolean        @default(false)
+  scheduleId          Int?
+  fileUrl             String?
+  schedule            Schedule?      @relation(fields: [scheduleId], references: [id])
+  week                Week           @relation(fields: [weekId], references: [id])
+  files               HomeworkFile[]
+}
+
+model HomeworkFile {
+  id         Int      @id @default(autoincrement())
+  filename   String
+  fileUrl    String
+  homeworkId Int
+  createdAt  DateTime @default(now())
+  homework   Homework @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+}
+
+model Exam {
+  id              Int      @id @default(autoincrement())
+  weekId          Int?
+  date            DateTime
+  subject         String
+  room            String?
+  notes           String?
+  theoryContent   String?
+  practiceContent String?
+  week            Week?    @relation(fields: [weekId], references: [id])
+  files           File[]
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  filename  String
+  fileUrl   String
+  examId    Int
+  createdAt DateTime @default(now())
+  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+}
+
+model Announcement {
+  id          Int       @id @default(autoincrement())
+  title       String
+  content     String
+  priority    String    @default("normal")
+  isPublished Boolean   @default(true)
+  startDate   DateTime  @default(now())
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SiteSettings {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model Note {
+  id         Int         @id @default(autoincrement())
+  subject    String
+  title      String
+  content    String
+  scheduleId Int?
+  weekId     Int?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  schedule   Schedule?   @relation(fields: [scheduleId], references: [id])
+  week       Week?       @relation(fields: [weekId], references: [id])
+  images     NoteImage[]
+}
+
+model NoteImage {
+  id        Int      @id @default(autoincrement())
+  filename  String
+  imageUrl  String
+  noteId    Int
+  createdAt DateTime @default(now())
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+}
+
+model WorkVariant {
+  id          Int              @id @default(autoincrement())
+  title       String
+  description String
+  isOccupied  Boolean          @default(false)
+  studentName String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  groupId     Int
+  files       VariantFile[]
+  group       WorkVariantGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
+
+model VariantFile {
+  id        Int         @id @default(autoincrement())
+  filename  String
+  fileUrl   String
+  variantId Int
+  createdAt DateTime    @default(now())
+  variant   WorkVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+
+model WorkVariantGroup {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  variants    WorkVariant[]
+}
+
+model Teacher {
+  id         Int      @id @default(autoincrement())
+  name       String
+  position   String
+  subject    String
+  email      String?  // Убран @unique, сделан необязательным
+  phone      String?
+  office     String?
+  schedule   String?
+  experience String?
+  degree     String?
+  avatar     String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Student {
+  id             Int      @id @default(autoincrement())
+  name           String
+  position       String
+  responsibility String
+  email          String?  // Убран @unique, сделан необязательным
+  phone          String?
+  telegram       String?
+  avatar         String?
+  year           String
+  gpa            String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
