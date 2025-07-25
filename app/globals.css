@@ -1,0 +1,365 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-medium tracking-tight text-foreground;
+  }
+}
+
+/* Базовые стили */
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Стили компонентов в стиле Notion */
+@layer components {
+  /* Карточки в стиле Notion */
+  .notion-card {
+    @apply bg-card border border-border/40 rounded-md shadow-sm transition-all duration-200;
+  }
+
+  .notion-card:hover {
+    @apply shadow-md;
+  }
+
+  /* Кнопки в стиле Notion */
+  .notion-button {
+    @apply rounded-md px-3 py-1.5 text-sm font-medium transition-colors duration-200 
+           bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .notion-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  /* Поля ввода в стиле Notion */
+  .notion-input {
+    @apply rounded-md border border-input bg-background px-3 py-1.5 text-sm 
+           focus:outline-none focus:ring-1 focus:ring-ring;
+  }
+
+  /* Заголовки в стиле Notion */
+  .notion-heading {
+    @apply font-medium text-foreground;
+  }
+
+  /* Разделители в стиле Notion */
+  .notion-divider {
+    @apply h-px w-full bg-border/60;
+  }
+
+  /* Боковая панель в стиле Notion */
+  .notion-sidebar {
+    @apply bg-card border-r border-border/40;
+  }
+
+  /* Элементы меню в стиле Notion */
+  .notion-menu-item {
+    @apply flex items-center gap-2 rounded-md px-3 py-2 text-sm text-foreground/80 
+           hover:bg-secondary transition-colors duration-200;
+  }
+
+  .notion-menu-item-active {
+    @apply bg-secondary text-foreground font-medium;
+  }
+}
+
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Статус-индикаторы */
+.status-indicator {
+  @apply inline-block h-2 w-2 rounded-full;
+  position: relative;
+}
+
+.status-indicator::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.3;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Стили для Markdown */
+.markdown-content {
+  @apply max-w-none text-foreground;
+}
+
+.markdown-content h1 {
+  @apply text-2xl font-semibold mb-4 text-foreground;
+}
+
+.markdown-content h2 {
+  @apply text-xl font-medium mb-3 mt-6 text-foreground;
+}
+
+.markdown-content h3 {
+  @apply text-lg font-medium mb-2 mt-5 text-foreground;
+}
+
+.markdown-content p {
+  @apply mb-4 text-foreground;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  @apply mb-4 pl-5;
+}
+
+.markdown-content ul {
+  @apply list-disc;
+}
+
+.markdown-content ol {
+  @apply list-decimal;
+}
+
+.markdown-content li {
+  @apply mb-1;
+}
+
+.markdown-content a {
+  @apply text-primary underline hover:text-primary/80 transition-colors;
+}
+
+.markdown-content blockquote {
+  @apply border-l-4 border-muted pl-4 italic my-4;
+}
+
+.markdown-content code {
+  @apply bg-muted px-1 py-0.5 rounded text-sm font-mono;
+}
+
+.markdown-content pre {
+  @apply bg-muted p-4 rounded-md overflow-x-auto my-4;
+}
+
+.markdown-content img {
+  @apply max-w-full h-auto rounded-md my-4;
+}
+
+.markdown-content table {
+  @apply w-full border-collapse my-4;
+}
+
+.markdown-content th,
+.markdown-content td {
+  @apply border border-border p-2 text-left;
+}
+
+.markdown-content th {
+  @apply bg-muted/50;
+}
+
+/* Фокус для доступности */
+:focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-1 ring-offset-background;
+}
+
+/* Скроллбар в стиле Notion */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.3);
+}
+
+/* Выделение текста */
+::selection {
+  background-color: hsl(var(--primary) / 0.1);
+  color: hsl(var(--foreground));
+}
+
+/* Адаптивные стили */
+@media (max-width: 640px) {
+  .notion-card {
+    @apply p-3;
+  }
+
+  .notion-heading {
+    @apply text-lg;
+  }
+}
+
+/* Стили для админ-панели */
+.admin-section {
+  @apply border border-border/40 shadow-sm;
+}
+
+.admin-header {
+  @apply border-b border-border/30 pb-4;
+}
+
+.custom-tabs {
+  @apply bg-muted/50 p-1 rounded-md;
+}
+
+.custom-tab {
+  @apply rounded-sm px-3 py-1.5 text-sm font-medium transition-all data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm;
+}
+
+.custom-tab-active {
+  @apply bg-background text-foreground shadow-sm;
+}
+
+/* Стили для карточек */
+.card-hover {
+  @apply transition-all duration-200 hover:shadow-md hover:border-border/60;
+}
+
+/* Стили для форм */
+.form-section {
+  @apply space-y-4 rounded-lg border border-border/40 p-4 bg-card;
+}
+
+.form-section-title {
+  @apply text-lg font-medium mb-3;
+}
+
+/* Стили для таблиц */
+.table-container {
+  @apply rounded-md border border-border/40 overflow-hidden;
+}
+
+.table-header {
+  @apply bg-muted/50;
+}
+
+.table-row {
+  @apply border-b border-border/30 hover:bg-muted/30 transition-colors;
+}
+
+.table-row:last-child {
+  @apply border-b-0;
+}
+
+/* Стили для мобильных устройств */
+@media (max-width: 768px) {
+  .mobile-hidden {
+    @apply hidden;
+  }
+
+  .mobile-only {
+    @apply block;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-hidden {
+    @apply block;
+  }
+
+  .mobile-only {
+    @apply hidden;
+  }
+}
