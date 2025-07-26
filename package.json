@@ -1,12 +1,19 @@
 {
-  "name": "my-v0-project",
+  "name": "zolms",
   "version": "0.1.0",
   "private": true,
+  "description": "Learning Management System (LMS) platform for educational courses",
+  "author": "ZorahM",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "test": "jest",
+    "prepare": "husky install",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
