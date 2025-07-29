@@ -12,7 +12,6 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "test": "jest",
-    "prepare": "husky install",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
